@@ -21,12 +21,12 @@ class Program
         int randomPicker = rng.Next(hiddenWords.Count);
                 
         string randomHiddenWord = hiddenWords[randomPicker];
-                
-        foreach (char letter in randomHiddenWord)
+
+        for (int letterCheck = 0; letterCheck <= randomHiddenWord.Length; letterCheck++)
         {
             Console.Write("_");
         }
-
+        
         for (int guessCounter = 0; guessCounter < MAX_TRIES; guessCounter++)
         {
             if (guessCounter >= MAX_TRIES)
