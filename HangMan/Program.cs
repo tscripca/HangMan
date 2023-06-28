@@ -24,7 +24,7 @@ namespace HangMan // Note: actual namespace depends on the project name.
                 "massachusetts"
                 };
             
-            List<string> terminationsList = new List<string>()
+            List<string> terminationsList = new List<string>() 
             {
                 "st",
                 "nd",
