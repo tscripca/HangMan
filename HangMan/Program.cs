@@ -8,7 +8,7 @@ namespace HangMan // Note: actual namespace depends on the project name.
         {            
             const int MAX_TRIES = 3;            
             char underline = '_';
-            char userLetter;
+            //char userLetter;
             bool playAgain = true;
 
             List<char> guessedLetter = new List<char>();
@@ -23,15 +23,7 @@ namespace HangMan // Note: actual namespace depends on the project name.
                 "carbonara",
                 "massachusetts"
                 };
-            
-            List<string> terminationsList = new List<string>() 
-            {
-                "st",
-                "nd",
-                "rd",
-                "th"
-            };
-
+                        
             Random rng = new Random();
 
             while (playAgain)
@@ -47,38 +39,48 @@ namespace HangMan // Note: actual namespace depends on the project name.
                     Console.Write(guessedLetter[j]);
                 }
 
+                Console.WriteLine();
+
                 for (int guessCounter = 0; guessCounter <= MAX_TRIES; guessCounter++)
-                {
-                    int countOfTries = guessCounter + 1;
-                    Console.Write($"\n{countOfTries}{terminationsList[guessCounter]} attempt\nInsert letter: ");
-                    userLetter = Convert.ToChar(Console.ReadLine().ToLower().Trim());
+                {                    
+                    int countOfTries = MAX_TRIES - guessCounter + 1;
+                    Console.Write($"{countOfTries} attempts left");
+                    Console.WriteLine();
+                    Console.Write("Insert letter: ");
+                    ConsoleKeyInfo userLetter = Console.ReadKey();
+                    Console.WriteLine();
+                    Console.WriteLine($"You've entered: {userLetter.KeyChar}");
 
                     Console.Clear();                    
 
                     for (int i = 0; i < randomHiddenWord.Length; i++)
                     {
-                        if (userLetter == randomHiddenWord[i])
+                        if (userLetter.KeyChar == randomHiddenWord[i])
                         {
-                            guessedLetter[i] = userLetter;//here is where the underline becomes the guessed letter                            
+                            guessedLetter[i] = userLetter.KeyChar;//here is where the underline becomes the guessed letter                            
                         }
 
                         Console.Write(guessedLetter[i]);
                     }
+                    Console.WriteLine();
                 }
 
-                Console.WriteLine($"\nTry to guess the word: ");                
+                Console.WriteLine("Try to guess the word: ");                
                 string userKnowsTheWord = Console.ReadLine().ToLower().Trim();
                 
                 if (userKnowsTheWord == randomHiddenWord)
                 {
-                    Console.WriteLine("WINNER!");
+                    Console.Clear();
+                    Console.WriteLine(randomHiddenWord);
+                    Console.WriteLine("WINNER!");                    
                 }
                 else
                 {
-                    Console.WriteLine("\nSorry, GAME OVER!");
+                    Console.Clear();
+                    Console.WriteLine("Sorry, GAME OVER!");
                 }
 
-                Console.WriteLine("\nWould you like to play again?: Y/N");
+                Console.WriteLine("Would you like to play again?: Y/N");
                 string userAnswer = Console.ReadLine().ToLower();
                 playAgain = (userAnswer == "y");
                 guessedLetter.Clear();
