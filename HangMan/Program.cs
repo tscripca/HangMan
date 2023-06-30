@@ -94,7 +94,7 @@ namespace HangMan // Note: actual namespace depends on the project name.
                             }
                             else
                             {
-                                Console.WriteLine("Try again!");
+                                Console.WriteLine("Wrong!");
                             }
                         }
                     }
