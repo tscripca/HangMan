@@ -9,7 +9,7 @@ namespace HangMan
             const int MINIMUM_TRIES = 2;
             const char USER_CHOICE_YES = 'y';
             const char USER_CHOICE_NO = 'n';
-            char underline = '_';
+            const char UNDERLINE = '_';
             bool playAgain = true;
             bool userTry = true;
             string userKnowsTheWord = " ";
