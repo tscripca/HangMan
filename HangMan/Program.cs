@@ -1,14 +1,17 @@
 ﻿using System;
 
-namespace HangMan // Note: actual namespace depends on the project name.
+namespace HangMan
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            const int THREE_LETTERS_WORD = 2;
-            char underline = '_';
+            const int MINIMUM_TRIES = 2;
+            const char USER_CHOICE_YES = 'y';
+            const char USER_CHOICE_NO = 'n';
+            const char UNDERLINE = '_';
             bool playAgain = true;
+            bool userTry = true;
             string userKnowsTheWord = " ";
             int showTriesLeft = 0;
 
@@ -16,7 +19,15 @@ namespace HangMan // Note: actual namespace depends on the project name.
 
             List<string> hiddenWords = new List<string>()
             {
-                "row",  
+                "row",
+                "airplane",
+                "parachute",
+                "sternocleidomastoid",
+                "netherlands",
+                "massachusetts",
+                "carbonara",
+                "eagle",
+                "Hippopotomonstrosesquippedaliophobia",
             };
 
             Random rng = new Random();
@@ -31,23 +42,19 @@ namespace HangMan // Note: actual namespace depends on the project name.
 
                 for (int j = 0; j < randomHiddenWord.Length; j++)
                 {
-                    guessedLetter.Add(underline);
+                    guessedLetter.Add(UNDERLINE);
                     Console.Write(guessedLetter[j]);
                 }
 
-                //add  1 more try for words that are less thatn 3 letters long.
-                              
+                if (maximumTries <= 1)
+                {
+                    maximumTries = MINIMUM_TRIES;
+                }
 
                 for (int guessCounter = 0; guessCounter < maximumTries; guessCounter++)
                 {
-                    if (randomHiddenWord.Length <= 3)
-                    {
-                        maximumTries = THREE_LETTERS_WORD;
-                        showTriesLeft = THREE_LETTERS_WORD - guessCounter;
-                    }
-                    else
-                    showTriesLeft = maximumTries - guessCounter;  
-                    
+                    showTriesLeft = maximumTries - guessCounter;
+
                     Console.WriteLine();
                     Console.WriteLine($"{showTriesLeft} attempts left");
                     Console.WriteLine();
@@ -61,48 +68,46 @@ namespace HangMan // Note: actual namespace depends on the project name.
                     {
                         if (userLetter.KeyChar == randomHiddenWord[i])
                         {
-
-                            guessedLetter[i] = userLetter.KeyChar; //here is where the underline becomes the guessed letter.    
-
+                            guessedLetter[i] = userLetter.KeyChar;
                         }
 
                         Console.Write(guessedLetter[i]);
-                    }
 
-                    //ask the user if he knows the word after he already guessed at least 1 letter.
-                    if (randomHiddenWord.Contains(userLetter.KeyChar))
-                    {
-                        Console.WriteLine();
-                        Console.Write("Maybe you already know the word?(Y/N): ");
-                        ConsoleKeyInfo waitingInput = Console.ReadKey();
-
-                        bool userTry = true;
-                        userTry = (waitingInput.KeyChar == 'y');
-
-                        if (userTry)
+                        if (guessedLetter[i] == randomHiddenWord[i])
                         {
-                            Console.Clear();
-                            Console.WriteLine("Type the word: ");
-                            userKnowsTheWord = Console.ReadLine().ToLower().Trim();
+                            Console.WriteLine();
+                            Console.Write("Maybe you already know the word?(Y/N): ");
+                            ConsoleKeyInfo waitingInput = Console.ReadKey();
 
-                            if (userKnowsTheWord == randomHiddenWord)
+                            userTry = (waitingInput.KeyChar == USER_CHOICE_YES);
+
+                            if (userTry)
                             {
                                 Console.Clear();
-                                Console.WriteLine(randomHiddenWord);
-                                Console.WriteLine("WINNER!");
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Wrong!");
+                                Console.WriteLine("Type the word: ");
+                                userKnowsTheWord = Console.ReadLine().ToLower().Trim();
+
+                                if (userKnowsTheWord == randomHiddenWord)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine(randomHiddenWord);
+                                    Console.WriteLine("WINNER!");
+                                    break;
+                                }
+
+                                if (userKnowsTheWord != randomHiddenWord)
+                                {
+                                    Console.WriteLine("Wrong!");
+                                }
                             }
                         }
                     }
                 }
-                Console.WriteLine();                
+
+                Console.WriteLine();
                 Console.WriteLine("Would you like to play again?: Y/N");
                 ConsoleKeyInfo userAnswer = Console.ReadKey();
-                playAgain = (userAnswer.KeyChar == 'y');
+                playAgain = (userAnswer.KeyChar == USER_CHOICE_YES);
                 guessedLetter.Clear();
             }
         }
