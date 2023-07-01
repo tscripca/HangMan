@@ -9,7 +9,7 @@ namespace HangMan
             const int MINIMUM_TRIES = 2;
             const char USER_CHOICE_YES = 'y';
             const char USER_CHOICE_NO = 'n';
-            const char UNDERLINE = '_';
+            char underline = '_';
             bool playAgain = true;
             bool userTry = true;
             string userKnowsTheWord = " ";
@@ -42,7 +42,7 @@ namespace HangMan
 
                 for (int j = 0; j < randomHiddenWord.Length; j++)
                 {
-                    guessedLetter.Add(UNDERLINE);
+                    guessedLetter.Add(underline);
                     Console.Write(guessedLetter[j]);
                 }
 
