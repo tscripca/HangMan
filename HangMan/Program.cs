@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HangMan
 {
@@ -8,42 +9,40 @@ namespace HangMan
         {
             const int MINIMUM_TRIES = 2;
             const char USER_CHOICE_YES = 'y';
-            const char USER_CHOICE_NO = 'n';
             const char UNDERLINE = '_';
-            bool playAgain = true;
-            bool userTry = true;
+            bool userWantsToPlayAgain = true;
+            bool userTryGuessFullWord = true;
             string userKnowsTheWord = " ";
-            int showTriesLeft = 0;
 
-            List<char> guessedLetter = new List<char>();
+            List<char> displayedLettersList = new List<char>();
 
             List<string> hiddenWords = new List<string>()
             {
                 "row",
-                "airplane",
+                /*"airplane",
                 "parachute",
                 "sternocleidomastoid",
                 "netherlands",
-                "massachusetts",
                 "carbonara",
                 "eagle",
                 "Hippopotomonstrosesquippedaliophobia",
+                "massachusetts",*/
             };
 
             Random rng = new Random();
 
-            while (playAgain)
+            while (userWantsToPlayAgain)
             {
-                int randomPicker = rng.Next(hiddenWords.Count);
-                string randomHiddenWord = hiddenWords[randomPicker];
+                int randomListIndex = rng.Next(hiddenWords.Count);
+                string randomHiddenWord = hiddenWords[randomListIndex];
                 int maximumTries = randomHiddenWord.Length / 2;     //change the number of tries based on the word's length.                         
 
                 Console.Clear();
 
                 for (int j = 0; j < randomHiddenWord.Length; j++)
                 {
-                    guessedLetter.Add(underline);
-                    Console.Write(guessedLetter[j]);
+                    displayedLettersList.Add(UNDERLINE);
+                    Console.Write(displayedLettersList[j]);
                 }
 
                 if (maximumTries <= 1)
@@ -51,9 +50,9 @@ namespace HangMan
                     maximumTries = MINIMUM_TRIES;
                 }
 
-                for (int guessCounter = 0; guessCounter < maximumTries; guessCounter++)
+                for (int guessCount = 0; guessCount < maximumTries; guessCount++)
                 {
-                    showTriesLeft = maximumTries - guessCounter;
+                    int showTriesLeft = maximumTries - guessCount;
 
                     Console.WriteLine();
                     Console.WriteLine($"{showTriesLeft} attempts left");
@@ -68,49 +67,64 @@ namespace HangMan
                     {
                         if (userLetter.KeyChar == randomHiddenWord[i])
                         {
-                            guessedLetter[i] = userLetter.KeyChar;
+                            displayedLettersList[i] = userLetter.KeyChar;
                         }
 
-                        Console.Write(guessedLetter[i]);
+                        Console.Write(displayedLettersList[i]);
+                    }
 
-                        if (guessedLetter[i] == randomHiddenWord[i])
+                    //ask the user only after he guessed at least one letter
+                    if (displayedLettersList.Contains(userLetter.KeyChar))
+                    {
+                        Console.WriteLine();
+                        Console.Write("Maybe you already know the word?(Y/N): ");
+                        ConsoleKeyInfo waitingInput = Console.ReadKey();
+
+                        userTryGuessFullWord = (waitingInput.KeyChar == USER_CHOICE_YES);
+                        Console.WriteLine();
+
+                        if (userTryGuessFullWord)
                         {
-                            Console.WriteLine();
-                            Console.Write("Maybe you already know the word?(Y/N): ");
-                            ConsoleKeyInfo waitingInput = Console.ReadKey();
+                            Console.WriteLine("Type the word: ");
+                            userKnowsTheWord = Console.ReadLine().ToLower().Trim();
 
-                            userTry = (waitingInput.KeyChar == USER_CHOICE_YES);
-
-                            if (userTry)
+                            if (userKnowsTheWord == randomHiddenWord)
                             {
                                 Console.Clear();
-                                Console.WriteLine("Type the word: ");
-                                userKnowsTheWord = Console.ReadLine().ToLower().Trim();
-
-                                if (userKnowsTheWord == randomHiddenWord)
-                                {
-                                    Console.Clear();
-                                    Console.WriteLine(randomHiddenWord);
-                                    Console.WriteLine("WINNER!");
-                                    break;
-                                }
-
-                                if (userKnowsTheWord != randomHiddenWord)
-                                {
-                                    Console.WriteLine("Wrong!");
-                                }
+                                Console.WriteLine(randomHiddenWord);
+                                Console.WriteLine("WINNER!");
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Wrong!");
                             }
                         }
+
                     }
+
+                    else
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Your letter doesn't match.");
+                        continue;
+                    }
+
+                }
+
+                if (displayedLettersList.Contains(UNDERLINE))
+                {
+                    Console.WriteLine("GAME OVER!");
+                    Console.WriteLine($"The word was: {randomHiddenWord}");
+                    break;
                 }
 
                 Console.WriteLine();
                 Console.WriteLine("Would you like to play again?: Y/N");
                 ConsoleKeyInfo userAnswer = Console.ReadKey();
-                playAgain = (userAnswer.KeyChar == USER_CHOICE_YES);
-                guessedLetter.Clear();
+                userWantsToPlayAgain = (userAnswer.KeyChar == USER_CHOICE_YES);
+                displayedLettersList.Clear();
             }
         }
     }
 }
-
