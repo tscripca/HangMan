@@ -19,13 +19,13 @@ namespace HangMan
             List<string> hiddenWords = new List<string>()
             {
                 "airplane",
-                /*"eagle",                            
+                "eagle",                            
                 "row",               
                 "parachute",
                 "sternocleidomastoid",
                 "netherlands",
                 "carbonara",                
-                "massachusetts",*/
+                "massachusetts",
             };
 
             Random rng = new Random();
@@ -72,7 +72,7 @@ namespace HangMan
                         Console.Write(displayedLettersList[i]);
                     }
 
-                    if (guessCount >= 2 && displayedLettersList.Contains(userLetter.KeyChar))
+                    if (displayedLettersList.Contains(userLetter.KeyChar))
                     {
                         Console.WriteLine();
                         Console.Write("Maybe you already know the word?(Y/N): ");
@@ -99,16 +99,17 @@ namespace HangMan
                             }
                         }
                     }
-                    else if (!displayedLettersList.Contains(userLetter.KeyChar))
+                    else
                     {
                         Console.WriteLine();
                         Console.WriteLine("Letter doesn't match.");
                     }
-                    if (guessCount >= showTriesLeft && displayedLettersList.Contains(UNDERLINE))
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("You didn't guess all the letters.");
-                    }
+                }
+
+                if (displayedLettersList.Contains(UNDERLINE))
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("You didn't guess all the letters.");
                 }
 
                 Console.WriteLine("Would you like to play again?: Y/N");
