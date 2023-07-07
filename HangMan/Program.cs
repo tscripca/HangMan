@@ -13,18 +13,19 @@ namespace HangMan
             bool userWantsToPlayAgain = true;
             bool userTryGuessFullWord = true;
             string userKnowsTheWord = "";
+            int counterLettersGuessedRight = 0;
 
             List<char> displayedLettersList = new List<char>();
 
             List<string> hiddenWords = new List<string>()
             {
                 "airplane",
-                "eagle",                            
-                "row",               
+                "eagle",
+                "row",
                 "parachute",
                 "sternocleidomastoid",
                 "netherlands",
-                "carbonara",                
+                "carbonara",
                 "massachusetts",
             };
 
@@ -34,7 +35,7 @@ namespace HangMan
             {
                 int randomListIndex = rng.Next(hiddenWords.Count);
                 string randomHiddenWord = hiddenWords[randomListIndex];
-                int maximumTries = randomHiddenWord.Length/2;     //change the number of tries based on the word's length.                         
+                int maximumTries = randomHiddenWord.Length;
 
                 Console.Clear();
 
@@ -62,14 +63,29 @@ namespace HangMan
                     Console.WriteLine();
                     Console.Clear();
 
+                    bool currentLetterMatch = false;
+
                     for (int i = 0; i < randomHiddenWord.Length; i++)
                     {
                         if (userLetter.KeyChar == randomHiddenWord[i])
                         {
+                            currentLetterMatch = true;
                             displayedLettersList[i] = userLetter.KeyChar;
-                        }
 
+                            if (!currentLetterMatch)
+                            {
+                                counterLettersGuessedRight++;
+                            }
+
+                        }
                         Console.Write(displayedLettersList[i]);
+                    }
+
+                    if (!displayedLettersList.Contains(UNDERLINE))
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("WINNER! You guessed the word before max tries was reached!");
+                        break;
                     }
 
                     if (displayedLettersList.Contains(userLetter.KeyChar))
@@ -99,6 +115,7 @@ namespace HangMan
                             }
                         }
                     }
+
                     else
                     {
                         Console.WriteLine();
@@ -110,13 +127,39 @@ namespace HangMan
                 {
                     Console.WriteLine();
                     Console.WriteLine("You didn't guess all the letters.");
+
+                    Console.WriteLine();
+                    Console.Write("Still maybe you know the word?(Y/N): ");
+                    ConsoleKeyInfo waitingInput = Console.ReadKey();
+
+                    userTryGuessFullWord = (waitingInput.KeyChar == USER_CHOICE_YES);
+                    Console.WriteLine();
+
+                    if (userTryGuessFullWord)
+                    {
+                        Console.WriteLine("Type the word: ");
+                        userKnowsTheWord = Console.ReadLine().ToLower().Trim();
+
+                        if (userKnowsTheWord == randomHiddenWord)
+                        {
+                            Console.Clear();
+                            Console.WriteLine(randomHiddenWord);
+                            Console.WriteLine("WINNER!");
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("GAME OVER! That's not the word");
+                        }
+                    }
                 }
 
                 Console.WriteLine("Would you like to play again?: Y/N");
                 ConsoleKeyInfo userAnswer = Console.ReadKey();
                 userWantsToPlayAgain = (userAnswer.KeyChar == USER_CHOICE_YES);
                 displayedLettersList.Clear();
-            }   
+
+            }
         }
     }
 }
