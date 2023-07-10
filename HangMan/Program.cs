@@ -123,12 +123,6 @@ namespace HangMan
                             }
                         }
                     }
-                }              
-
-                if (displayedLettersList.Contains(UNDERLINE) && counterLettersGuessedRight >= 1)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("You haven't discovered all the letters yet.");                    
                 }
 
                 if (counterLettersGuessedRight == 0)
@@ -136,6 +130,12 @@ namespace HangMan
                     Console.WriteLine();
                     Console.WriteLine("You haven't guessed any letters.");
                 }
+
+                if (displayedLettersList.Contains(UNDERLINE) && counterLettersGuessedRight >= 1)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("You haven't discovered all the letters yet.");                    
+                }               
 
                 Console.WriteLine("Would you like to play again?: Y/N");
                 ConsoleKeyInfo userAnswer = Console.ReadKey();
