@@ -13,8 +13,9 @@ namespace HangMan
             bool userTryGuessFullWord = true;
             string userKnowsTheWord = "";
             int showTriesLeft = 0;
+            bool underscoresLeft = true;
 
-            List<char> displayedLettersList = new List<char>();
+            List<char> displayedLettersList = new List<char>();            
 
             List<string> hiddenWords = new List<string>()
             {
@@ -37,14 +38,13 @@ namespace HangMan
                 string randomHiddenWord = hiddenWords[randomListIndex];
                 int maximumTries = randomHiddenWord.Length;
 
-
                 Console.Clear();
 
                 for (int j = 0; j < randomHiddenWord.Length; j++)
                 {
                     displayedLettersList.Add(UNDERLINE);
                     Console.Write(displayedLettersList[j]);
-                }
+                }                
 
                 int counterLettersGuessedRight = 0;
 
@@ -77,13 +77,15 @@ namespace HangMan
                         Console.Write(displayedLettersList[i]);
                     }
 
+                    underscoresLeft = (displayedLettersList.Contains(UNDERLINE) == true);
+
                     if (!displayedLettersList.Contains(userLetter.KeyChar))
                     {
                         Console.WriteLine();
                         Console.WriteLine("Letter doesn't match.");
                     }
-
-                    if (!displayedLettersList.Contains(UNDERLINE))
+                    
+                    if (!underscoresLeft)
                     {
                         Console.WriteLine();
                         Console.WriteLine("WINNER! You guessed the word before max tries was reached!");
@@ -131,7 +133,7 @@ namespace HangMan
                     Console.WriteLine("You haven't guessed any letters.");
                 }
 
-                if (displayedLettersList.Contains(UNDERLINE) && counterLettersGuessedRight >= 1)
+                if (underscoresLeft && counterLettersGuessedRight >= 1)
                 {
                     Console.WriteLine();
                     Console.WriteLine("You haven't discovered all the letters yet.");                    
