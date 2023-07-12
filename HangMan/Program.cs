@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace HangMan
+﻿namespace HangMan
 {
     internal class Program
     {
@@ -14,7 +11,7 @@ namespace HangMan
             string userKnowsTheWord = "";
             int showTriesLeft = 0;
             bool underscoresLeft = true;
-
+            
             List<char> displayedLettersList = new List<char>();            
 
             List<string> hiddenWords = new List<string>()
@@ -57,6 +54,7 @@ namespace HangMan
                     Console.WriteLine();
                     Console.Write("Insert letter: \n");
                     ConsoleKeyInfo userLetter = Console.ReadKey();
+                    char k = (char)userLetter.KeyChar;
 
                     Console.WriteLine();
                     Console.Clear();
@@ -65,13 +63,13 @@ namespace HangMan
 
                     for (int i = 0; i < randomHiddenWord.Length; i++)
                     {
-                        if (userLetter.KeyChar == randomHiddenWord[i])
+                        if (k == randomHiddenWord[i])
                         {
                             if (!currentLetterMatch)
                             {
                                 counterLettersGuessedRight++;
                             }
-                            displayedLettersList[i] = userLetter.KeyChar;
+                            displayedLettersList[i] = k;
                             currentLetterMatch = true;
                         }
                         Console.Write(displayedLettersList[i]);
@@ -79,7 +77,7 @@ namespace HangMan
 
                     underscoresLeft = (displayedLettersList.Contains(UNDERLINE) == true);
 
-                    if (!displayedLettersList.Contains(userLetter.KeyChar))
+                    if (!displayedLettersList.Contains(k))
                     {
                         Console.WriteLine();
                         Console.WriteLine("Letter doesn't match.");
@@ -97,8 +95,9 @@ namespace HangMan
                         Console.WriteLine();
                         Console.Write("Maybe you know the word?(Y/N): ");
                         ConsoleKeyInfo waitingInput = Console.ReadKey();
+                        char W = (char)waitingInput.KeyChar;
 
-                        userTryGuessFullWord = (waitingInput.KeyChar == USER_CHOICE_YES);
+                        userTryGuessFullWord = (W == USER_CHOICE_YES);
                         Console.WriteLine();
 
                         if (userTryGuessFullWord)
@@ -133,7 +132,7 @@ namespace HangMan
                     Console.WriteLine("You haven't guessed any letters.");
                 }
 
-                if (underscoresLeft && counterLettersGuessedRight >= 1)
+                if (underscoresLeft && showTriesLeft == 0)
                 {
                     Console.WriteLine();
                     Console.WriteLine("You haven't discovered all the letters yet.");                    
@@ -141,7 +140,8 @@ namespace HangMan
 
                 Console.WriteLine("Would you like to play again?: Y/N");
                 ConsoleKeyInfo userAnswer = Console.ReadKey();
-                userWantsToPlayAgain = (userAnswer.KeyChar == USER_CHOICE_YES);
+                char U = (char)userAnswer.KeyChar;
+                userWantsToPlayAgain = (U == USER_CHOICE_YES);
                 displayedLettersList.Clear();
             }
         }
