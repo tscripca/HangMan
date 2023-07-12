@@ -54,7 +54,7 @@
                     Console.WriteLine();
                     Console.Write("Insert letter: \n");
                     ConsoleKeyInfo userLetter = Console.ReadKey();
-                    char k = (char)userLetter.KeyChar;
+                    char UserKeyInfo = (char)userLetter.KeyChar;
 
                     Console.WriteLine();
                     Console.Clear();
@@ -63,7 +63,7 @@
 
                     for (int i = 0; i < randomHiddenWord.Length; i++)
                     {
-                        if (k == randomHiddenWord[i])
+                        if (UserKeyInfo == randomHiddenWord[i])
                         {
                             if (!currentLetterMatch)
                             {
@@ -95,9 +95,9 @@
                         Console.WriteLine();
                         Console.Write("Maybe you know the word?(Y/N): ");
                         ConsoleKeyInfo waitingInput = Console.ReadKey();
-                        char W = (char)waitingInput.KeyChar;
+                        char userTry = (char)waitingInput.KeyChar;
 
-                        userTryGuessFullWord = (W == USER_CHOICE_YES);
+                        userTryGuessFullWord = (userTry == USER_CHOICE_YES);
                         Console.WriteLine();
 
                         if (userTryGuessFullWord)
@@ -140,8 +140,8 @@
 
                 Console.WriteLine("Would you like to play again?: Y/N");
                 ConsoleKeyInfo userAnswer = Console.ReadKey();
-                char U = (char)userAnswer.KeyChar;
-                userWantsToPlayAgain = (U == USER_CHOICE_YES);
+                char willPlayAgain = (char)userAnswer.KeyChar;
+                userWantsToPlayAgain = (willPlayAgain == USER_CHOICE_YES);
                 displayedLettersList.Clear();
             }
         }
